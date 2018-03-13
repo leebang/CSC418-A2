@@ -22,5 +22,13 @@ void main() {
   // Your solution should go here.
   
   // The model is currently rendered in black
-  gl_FragColor = vec4(vec3(0.0), 1.0);
+    // normalize normalInterp
+    vec3 V_NORM = normalize(normalInterp);
+    // b
+    vec3 V_VIEW = normalize(-vertPos);
+    // Diff
+    vec3 Diff = (Kd * diffuseColor * (1.0 - abs(dot(V_NORM, V_VIEW))));
+    
+    
+  gl_FragColor = vec4(Diff, 1.0);
 }

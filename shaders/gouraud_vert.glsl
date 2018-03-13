@@ -29,5 +29,20 @@ void main(){
 
   vec4 vertPos4 = modelview * vec4(position, 1.0);
   gl_Position = projection * vertPos4;
-  color = vec4(ambientColor, 1.0); 
+    
+    vec3 V_NORM = normalize(mat3(normalMat) * normal);
+    // light direction
+    vec3 V_LIGHT = normalize(lightPos - vec3(vertPos4));
+    // b
+    vec3 V_VIEW = normalize(eyePos - vec3(vertPos4));
+    // specular reflection
+    vec3 V_REFL = reflect(-V_LIGHT, V_NORM);
+
+    // Ambient + Diffuse + Specular
+    vec3 allLight =
+    (Ka * ambientColor) +
+    (Kd * diffuseColor * max(0.0, dot(V_NORM, V_LIGHT))) +
+    specularColor * Ks * pow(max(0.0, dot(V_REFL, V_VIEW)), shininessVal);
+    
+    color = vec4(allLight, 1.0);
 }
